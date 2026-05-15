@@ -1,4 +1,7 @@
 from flask import current_app, render_template
+from .extensions import appbuilder
+from flask_appbuilder import ModelView
+from flask_appbuilder.models.sqla.interface import SQLAInterface
 
 """
     Create your Model based REST API::
