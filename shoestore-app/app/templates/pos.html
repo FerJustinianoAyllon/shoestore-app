@@ -38,7 +38,7 @@
                             <select name="producto_id" class="form-control">
                                 {% for p in productos %}
                                 <option value="{{ p.id }}">
-                                    {{ p.nombre }} - ${{ p.precio }} (Stock: {{ p.stock }})
+                                    {{ p.nombre }} - Bs.{{ p.precio }} (Stock: {{ p.stock }})
                                 </option>
                                 {% endfor %}
                             </select>
@@ -62,7 +62,7 @@
 
                 <!-- TOTAL -->
                 <div class="text-right">
-                    <h4>Total: $<span id="total">0</span></h4>
+                    <h4>Total: Bs.<span id="total">0</span></h4>
                 </div>
 
                 <br>
@@ -89,7 +89,7 @@ function calcular() {
         let cantidad = row.querySelector('.cantidad').value;
 
         let precioText = select.options[select.selectedIndex].text;
-        let precio = parseFloat(precioText.split('$')[1]);
+        let precio = parseFloat(precioText.split('Bs.')[1]);
 
         let subtotal = precio * cantidad;
 

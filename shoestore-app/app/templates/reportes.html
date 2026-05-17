@@ -1,0 +1,73 @@
+{% extends "appbuilder/base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <h2>REPORTES</h2>
+
+    <hr>
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="well">
+                <h4>Total Productos</h4>
+                <h2>{{ total_productos }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="well">
+                <h4>Total Clientes</h4>
+                <h2>{{ total_clientes }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="well">
+                <h4>Total Ventas</h4>
+                <h2>{{ total_ventas }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="well">
+                <h4>Ingresos</h4>
+                <h2>Bs.{{ ingresos }}</h2>
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <h3>PRODUCTOS VENDIDOS</h3>
+
+    <table class="table table-bordered">
+
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Total Vendido</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for producto, total in productos_vendidos %}
+
+            <tr>
+                <td>{{ producto }}</td>
+                <td>{{ total }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

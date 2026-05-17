@@ -3,12 +3,12 @@ from flask_appbuilder.models.sqla.interface import SQLAInterface
 from flask import render_template, request, redirect, url_for
 from datetime import date
 from .extensions import appbuilder, db
-from .models import (Categoria, Producto, Cliente, Venta, DetalleVenta,
-)
+from .models import (Categoria, Producto, Cliente, Venta, DetalleVenta)
 from wtforms import FileField
 from werkzeug.utils import secure_filename
 import os
 from flask import flash
+from sqlalchemy import func
 
 class CategoriaView(ModelView):
     datamodel = SQLAInterface(Categoria)
@@ -179,6 +179,40 @@ class POSView(BaseView):
         # ✔ IMPORTANTE: volver al mismo módulo sin salir del sistema
         return redirect(url_for("POSView.index"))
 
+#REPORTES
+
+class ReporteView(BaseView):
+    default_view = "index"
+
+    @expose("/")
+    def index(self):
+
+        total_productos = db.session.query(func.count(Producto.id)).scalar()
+
+        total_clientes = db.session.query(func.count(Cliente.id)).scalar()
+
+        total_ventas = db.session.query(func.count(Venta.id)).scalar()
+
+        ingresos = db.session.query(func.sum(Venta.total)).scalar() or 0
+
+        productos_vendidos = (
+            db.session.query(
+                Producto.nombre,
+                func.sum(DetalleVenta.cantidad).label("total")
+            )
+            .join(DetalleVenta)
+            .group_by(Producto.nombre)
+            .all()
+        )
+
+        return self.render_template(
+            "reportes.html",
+            total_productos=total_productos,
+            total_clientes=total_clientes,
+            total_ventas=total_ventas,
+            ingresos=ingresos,
+            productos_vendidos=productos_vendidos
+        )      
 
 appbuilder.add_view(
     CategoriaView,
@@ -213,4 +247,11 @@ appbuilder.add_view(
     "Nueva Venta",
     icon="fa-shopping-cart",
     category="Ventas",
+)
+
+appbuilder.add_view(
+    ReporteView,
+    "Reportes",
+    icon="fa-bar-chart",
+    category="Reportes",
 )
