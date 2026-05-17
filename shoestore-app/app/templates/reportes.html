@@ -2,81 +2,163 @@
 
 {% block content %}
 
+<style>
+
+body{
+    background: #f4f7fc;
+}
+
+/* TITULO */
+.titulo-reportes{
+    background: linear-gradient(135deg, #4f46e5, #2563eb);
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.titulo-reportes h2{
+    margin: 0;
+    font-weight: bold;
+}
+
+/* TARJETAS */
+.card-dashboard{
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.card-dashboard:hover{
+    transform: translateY(-5px);
+}
+
+.card-dashboard h4{
+    color: #6b7280;
+    font-size: 16px;
+}
+
+.card-dashboard h2{
+    color: #2563eb;
+    font-weight: bold;
+}
+
+/* TABLA */
+.tabla-reportes{
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-top: 20px;
+}
+
+.table thead{
+    background: #2563eb;
+    color: white;
+}
+
+/* GRAFICA */
+.grafica-container{
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+</style>
+
 <div class="container">
 
-    <h2>REPORTES</h2>
+    <!-- TITULO -->
+    <div class="titulo-reportes">
+        <h2>📊 Reporte de Ventas</h2>
+        <p>Resumen general del sistema</p>
+    </div>
 
-    <hr>
-
+    <!-- TARJETAS -->
     <div class="row">
 
         <div class="col-md-3">
-            <div class="well">
+            <div class="card-dashboard">
                 <h4>Total Productos</h4>
                 <h2>{{ total_productos }}</h2>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="well">
+            <div class="card-dashboard">
                 <h4>Total Clientes</h4>
                 <h2>{{ total_clientes }}</h2>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="well">
+            <div class="card-dashboard">
                 <h4>Total Ventas</h4>
                 <h2>{{ total_ventas }}</h2>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="well">
-                <h4>Ingresos</h4>
-                <h2>Bs.{{ ingresos }}</h2>
+            <div class="card-dashboard">
+                <h4>Total Ingresos</h4>
+                <h2>Bs. {{ ingresos }}</h2>
             </div>
         </div>
 
     </div>
 
-    <hr>
+    <!-- TABLA -->
+    <div class="tabla-reportes">
 
-    <h3>PRODUCTOS VENDIDOS</h3>
+        <h3>📦 Productos Vendidos</h3>
 
-    <table class="table table-bordered">
+        <table class="table table-hover">
 
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Total Vendido</th>
-            </tr>
-        </thead>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Total Vendido</th>
+                </tr>
+            </thead>
 
-        <tbody>
+            <tbody>
 
-            {% for producto, total in productos_vendidos %}
+                {% for producto, total in productos_vendidos %}
 
-            <tr>
-                <td>{{ producto }}</td>
-                <td>{{ total }}</td>
-            </tr>
+                <tr>
+                    <td>{{ producto }}</td>
+                    <td>{{ total }}</td>
+                </tr>
 
-            {% endfor %}
+                {% endfor %}
 
-        </tbody>
+            </tbody>
 
-    </table>
+        </table>
 
-    <hr>
+    </div>
 
-<h3>Gráfica de Productos Vendidos</h3>
+    <!-- GRAFICA -->
+    <div class="grafica-container">
 
-<canvas id="graficaProductos"></canvas>
+        <h3>📈 Gráfico de Ventas</h3>
+
+        <canvas id="graficaProductos"></canvas>
+
+    </div>
+
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+
 const ctx = document.getElementById('graficaProductos');
 
 new Chart(ctx, {
@@ -86,20 +168,42 @@ new Chart(ctx, {
         datasets: [{
             label: 'Cantidad Vendida',
             data: {{ valores|tojson }},
+            backgroundColor: [
+                '#2563eb',
+                '#10b981',
+                '#f59e0b',
+                '#ef4444',
+                '#8b5cf6'
+            ],
+            borderRadius: 10,
             borderWidth: 1
         }]
     },
     options: {
         responsive: true,
+        plugins: {
+            legend: {
+                labels: {
+                    color: '#374151'
+                }
+            }
+        },
         scales: {
             y: {
-                beginAtZero: true
+                beginAtZero: true,
+                ticks: {
+                    color: '#6b7280'
+                }
+            },
+            x: {
+                ticks: {
+                    color: '#6b7280'
+                }
             }
         }
     }
 });
-</script>
 
-</div>
+</script>
 
 {% endblock %}
