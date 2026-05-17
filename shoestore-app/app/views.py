@@ -24,6 +24,7 @@ class ProductoView(ModelView):
         "precio",
         "stock",
         "imagen",
+        "creado_en",
         "categoria"
     ]
 
@@ -58,6 +59,7 @@ class ProductoView(ModelView):
                 "precio",
                 "stock",
                 "imagen",
+                "creado_en",
                 "categoria"
             ]
         })
@@ -199,10 +201,6 @@ appbuilder.add_view(
     icon="fa-list",
     category="Ventas",
 )
-
-# =========================
-# POS (CORRECTO EN MENÚ)
-# =========================
 
 appbuilder.add_view(
     POSView,
