@@ -1,0 +1,110 @@
+{% extends "appbuilder/base.html" %}
+
+{% block content %}
+
+<div class="container" style="max-width: 900px;">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 style="margin:0;">Sistema de Ventas</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <form method="POST" action="{{ url_for('POSView.save') }}">
+
+                <!-- CLIENTE -->
+                <div class="form-group">
+                    <label>Cliente</label>
+                    <select name="cliente" class="form-control" required>
+                        <option value="">-- Selecciona cliente --</option>
+                        {% for c in clientes %}
+                        <option value="{{ c.id }}">{{ c.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <hr>
+
+                <!-- PRODUCTOS -->
+                <h4>Productos</h4>
+
+                <div id="productos">
+
+                    <div class="row producto-item" style="margin-bottom:10px;">
+
+                        <div class="col-md-6">
+                            <label>Producto</label>
+                            <select name="producto_id" class="form-control">
+                                {% for p in productos %}
+                                <option value="{{ p.id }}">
+                                    {{ p.nombre }} - ${{ p.precio }} (Stock: {{ p.stock }})
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>Cantidad</label>
+                            <input type="number" name="cantidad" class="form-control cantidad" value="1" min="1">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>Subtotal</label>
+                            <input type="text" class="form-control subtotal" value="0" readonly>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <!-- TOTAL -->
+                <div class="text-right">
+                    <h4>Total: $<span id="total">0</span></h4>
+                </div>
+
+                <br>
+
+                <button type="submit" class="btn btn-success">
+                    Finalizar Venta
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- JS PARA SUBTOTAL Y TOTAL -->
+<script>
+function calcular() {
+    let total = 0;
+
+    document.querySelectorAll('.producto-item').forEach(row => {
+
+        let select = row.querySelector('select');
+        let cantidad = row.querySelector('.cantidad').value;
+
+        let precioText = select.options[select.selectedIndex].text;
+        let precio = parseFloat(precioText.split('$')[1]);
+
+        let subtotal = precio * cantidad;
+
+        row.querySelector('.subtotal').value = subtotal.toFixed(2);
+
+        total += subtotal;
+    });
+
+    document.getElementById("total").innerText = total.toFixed(2);
+}
+
+document.addEventListener("change", calcular);
+document.addEventListener("input", calcular);
+
+window.onload = calcular;
+</script>
+
+{% endblock %}

@@ -15,7 +15,13 @@ SECRET_KEY = "Mi_clave_secreta_123"
 #SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "app.db")
 
 SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@localhost/shoestore_db"
+SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+APP_NAME = "Sistema de Ventas de Zapatillas"
+
+APP_THEME = "flatly.css"
+
+BABEL_DEFAULT_LOCALE = "es"
 # SQLALCHEMY_DATABASE_URI = 'mysql://myapp@localhost/myapp'
 # SQLALCHEMY_DATABASE_URI = 'postgresql://root:password@localhost/myapp'
 
