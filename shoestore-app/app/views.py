@@ -204,6 +204,9 @@ class ReporteView(BaseView):
             .group_by(Producto.nombre)
             .all()
         )
+        
+        labels = [p[0] for p in productos_vendidos]
+        valores = [p[1] for p in productos_vendidos]
 
         return self.render_template(
             "reportes.html",
@@ -211,7 +214,9 @@ class ReporteView(BaseView):
             total_clientes=total_clientes,
             total_ventas=total_ventas,
             ingresos=ingresos,
-            productos_vendidos=productos_vendidos
+            productos_vendidos=productos_vendidos,
+            labels=labels,
+            valores=valores
         )      
 
 appbuilder.add_view(

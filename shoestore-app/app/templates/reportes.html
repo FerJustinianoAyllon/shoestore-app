@@ -68,6 +68,38 @@
 
     </table>
 
+    <hr>
+
+<h3>Gráfica de Productos Vendidos</h3>
+
+<canvas id="graficaProductos"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const ctx = document.getElementById('graficaProductos');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{ labels|tojson }},
+        datasets: [{
+            label: 'Cantidad Vendida',
+            data: {{ valores|tojson }},
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+
 </div>
 
 {% endblock %}
