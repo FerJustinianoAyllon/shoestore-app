@@ -110,7 +110,13 @@ class ClienteView(ModelView):
 
 class DetalleVentaView(ModelView):
     datamodel = SQLAInterface(DetalleVenta)
-    list_columns = ["id", "venta", "producto", "cantidad", "subtotal"]
+    list_columns = ["venta", "producto", "cantidad", "subtotal"]
+    
+    order_columns = ["venta", "producto","cantidad","subtotal"]
+    
+    search_columns = ["venta", "producto"]
+
+    base_permissions = ["can_list", "can_show", "can_edit", "can_delete"]
 
 class POSView(BaseView):
     default_view = "index"
