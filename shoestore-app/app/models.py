@@ -1,7 +1,8 @@
 from flask_appbuilder import Model
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, Date
 from sqlalchemy.orm import relationship
-from datetime import date
+from datetime import date, datetime, UTC
+from sqlalchemy import DateTime
 
 
 class Categoria(Model):
@@ -23,6 +24,9 @@ class Producto(Model):
     nombre = Column(String(100), nullable=False)
     precio = Column(Float, nullable=False)
     stock = Column(Integer, nullable=False)
+    imagen = Column(String(255), nullable=True)
+    creado_en = Column(DateTime, default=lambda: datetime.now(UTC), nullable=False)
+    actualizado_en = Column(DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC), nullable=False)
 
     categoria_id = Column(Integer, ForeignKey("categoria.id"))
     categoria = relationship("Categoria", back_populates="productos")

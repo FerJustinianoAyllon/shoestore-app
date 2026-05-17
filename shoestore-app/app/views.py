@@ -2,10 +2,13 @@ from flask_appbuilder import ModelView, BaseView, expose
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 from flask import render_template, request, redirect, url_for
 from datetime import date
-
 from .extensions import appbuilder, db
 from .models import (Categoria, Producto, Cliente, Venta, DetalleVenta,
 )
+from wtforms import FileField
+from werkzeug.utils import secure_filename
+import os
+from flask import flash
 
 class CategoriaView(ModelView):
     datamodel = SQLAInterface(Categoria)
@@ -14,27 +17,98 @@ class CategoriaView(ModelView):
 
 class ProductoView(ModelView):
     datamodel = SQLAInterface(Producto)
-    list_columns = ["id", "nombre", "precio", "stock", "categoria"]
+
+    list_columns = [
+        "id",
+        "nombre",
+        "precio",
+        "stock",
+        "imagen",
+        "categoria"
+    ]
+
+    add_columns = [
+        "nombre",
+        "precio",
+        "stock",
+        "imagen",
+        "categoria"
+    ]
+
+    edit_columns = [
+        "nombre",
+        "precio",
+        "stock",
+        "imagen",
+        "categoria"
+    ]
+
+    add_form_extra_fields = {
+        "imagen": FileField("Imagen")
+    }
+
+    edit_form_extra_fields = {
+        "imagen": FileField("Imagen")
+    }
+
+    show_fieldsets = [
+        ("Producto", {
+            "fields": [
+                "nombre",
+                "precio",
+                "stock",
+                "imagen",
+                "categoria"
+            ]
+        })
+    ]
+
+    def pre_add(self, item):
+
+        file = request.files.get("imagen")
+
+        if file and file.filename:
+
+            filename = secure_filename(file.filename)
+
+            upload_path = os.path.join(
+                "app",
+                "static",
+                "uploads",
+                filename
+            )
+
+            file.save(upload_path)
+
+            item.imagen = filename
+
+    def pre_update(self, item):
+
+        file = request.files.get("imagen")
+
+        if file and file.filename:
+
+            filename = secure_filename(file.filename)
+
+            upload_path = os.path.join(
+                "app",
+                "static",
+                "uploads",
+                filename
+            )
+
+            file.save(upload_path)
+
+            item.imagen = filename
 
 
 class ClienteView(ModelView):
     datamodel = SQLAInterface(Cliente)
     list_columns = ["id", "nombre", "telefono", "correo"]
 
-
-class VentaView(ModelView):
-    datamodel = SQLAInterface(Venta)
-    list_columns = ["id", "fecha", "cliente", "total"]
-
-
 class DetalleVentaView(ModelView):
     datamodel = SQLAInterface(DetalleVenta)
     list_columns = ["id", "venta", "producto", "cantidad", "subtotal"]
-
-
-# =========================
-# POS INTEGRADO CORRECTO
-# =========================
 
 class POSView(BaseView):
     default_view = "index"
@@ -98,10 +172,6 @@ class POSView(BaseView):
         return redirect(url_for("POSView.index"))
 
 
-# =========================
-# REGISTER VIEWS
-# =========================
-
 appbuilder.add_view(
     CategoriaView,
     "Categorias",
@@ -120,13 +190,6 @@ appbuilder.add_view(
     ClienteView,
     "Clientes",
     icon="fa-users",
-    category="Ventas",
-)
-
-appbuilder.add_view(
-    VentaView,
-    "Ventas",
-    icon="fa-money",
     category="Ventas",
 )
 
