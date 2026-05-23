@@ -9,6 +9,7 @@ from werkzeug.utils import secure_filename
 import os
 from flask import flash
 from sqlalchemy import func
+from .ia_service import generar_analisis
 
 class CategoriaView(ModelView):
     datamodel = SQLAInterface(Categoria)
@@ -181,7 +182,7 @@ class POSView(BaseView):
 
 #REPORTES
 
-class ReporteView(BaseView):
+class Reporte1View(BaseView):
     default_view = "index"
 
     @expose("/")
@@ -207,17 +208,197 @@ class ReporteView(BaseView):
         
         labels = [p[0] for p in productos_vendidos]
         valores = [p[1] for p in productos_vendidos]
+        
+         # IA
+        prompt = f"""
+        Analiza estas estadísticas de una tienda de zapatos:
+
+        Productos registrados: {total_productos}
+        Clientes registrados: {total_clientes}
+        Ventas realizadas: {total_ventas}
+        Ingresos: {ingresos}
+
+        Productos vendidos:
+        {productos_vendidos}
+
+        Genera un análisis corto y profesional.
+        """
+
+        analisis_ia = generar_analisis(prompt)
 
         return self.render_template(
-            "reportes.html",
+            "reportes/reporte1.html",
             total_productos=total_productos,
             total_clientes=total_clientes,
             total_ventas=total_ventas,
             ingresos=ingresos,
             productos_vendidos=productos_vendidos,
             labels=labels,
-            valores=valores
-        )      
+            valores=valores,
+            analisis_ia=analisis_ia
+        )  
+        
+class Reporte2View(BaseView):
+    default_view = "index"
+
+    @expose("/")
+    def index(self):
+
+        total_productos = db.session.query(func.count(Producto.id)).scalar()
+
+        total_clientes = db.session.query(func.count(Cliente.id)).scalar()
+
+        total_ventas = db.session.query(func.count(Venta.id)).scalar()
+
+        ingresos = db.session.query(func.sum(Venta.total)).scalar() or 0
+
+        ventas_por_dia = (
+            db.session.query(
+                Venta.fecha,
+                func.sum(Venta.total).label("total")
+            )
+            .group_by(Venta.fecha)
+            .order_by(Venta.fecha)
+            .all()
+        )
+
+        labels = [str(v[0]) for v in ventas_por_dia]
+
+        valores = [float(v[1]) for v in ventas_por_dia]
+
+        promedio_ventas = round(
+            ingresos / total_ventas, 2
+        ) if total_ventas > 0 else 0
+
+        max_venta = max(valores) if valores else 0
+
+        min_venta = min(valores) if valores else 0
+
+        crecimiento = "Crecimiento estable"
+
+        if len(valores) >= 2:
+            if valores[-1] > valores[0]:
+                crecimiento = "Las ventas muestran crecimiento"
+            else:
+                crecimiento = "Las ventas muestran disminución"
+
+        # IA
+        prompt = f"""
+        Analiza las tendencias de ventas de una tienda de zapatos.
+
+        Ventas por día:
+        {ventas_por_dia}
+
+        Promedio de ventas:
+        {promedio_ventas}
+
+        Venta máxima:
+        {max_venta}
+
+        Venta mínima:
+        {min_venta}
+
+        Genera:
+        - análisis de comportamiento
+        - patrones detectados
+        - recomendaciones
+        - posibles riesgos
+        - sugerencias para aumentar ventas
+        """
+
+        analisis_ia = generar_analisis(prompt)
+
+        return self.render_template(
+            "reportes/reporte2.html",
+            total_productos=total_productos,
+            total_clientes=total_clientes,
+            total_ventas=total_ventas,
+            ingresos=ingresos,
+            labels=labels,
+            valores=valores,
+            promedio_ventas=promedio_ventas,
+            max_venta=max_venta,
+            min_venta=min_venta,
+            crecimiento=crecimiento,
+            analisis_ia=analisis_ia
+        )   
+        
+class Reporte3View(BaseView):
+    default_view = "index"
+
+    @expose("/")
+    def index(self):
+
+        total_productos = db.session.query(func.count(Producto.id)).scalar()
+
+        total_clientes = db.session.query(func.count(Cliente.id)).scalar()
+
+        total_ventas = db.session.query(func.count(Venta.id)).scalar()
+
+        ingresos = db.session.query(func.sum(Venta.total)).scalar() or 0
+
+        top_productos = (
+            db.session.query(
+                Producto.nombre,
+                Producto.stock,
+                func.sum(DetalleVenta.cantidad).label("cantidad")
+            )
+            .join(DetalleVenta)
+            .group_by(Producto.nombre, Producto.stock)
+            .order_by(func.sum(DetalleVenta.cantidad).desc())
+            .limit(5)
+            .all()
+        )
+
+        labels = [p[0] for p in top_productos]
+
+        valores = [int(p[2]) for p in top_productos]
+
+        producto_top = labels[0] if labels else "Sin datos"
+
+        stock_bajo = [
+            p[0]
+            for p in top_productos
+            if p[1] < 5
+        ]
+
+        recomendacion_stock = (
+            "Se recomienda reabastecer productos con bajo stock."
+            if stock_bajo else
+            "El stock actual es estable."
+        )
+
+        # IA
+        prompt = f"""
+        Analiza estos productos más vendidos de una tienda de zapatos:
+
+        {top_productos}
+
+        Genera:
+        - predicción de demanda
+        - recomendaciones de negocio
+        - productos prioritarios
+        - riesgos de stock
+        - sugerencias para aumentar ingresos
+        - estrategias de ventas
+        """
+
+        analisis_ia = generar_analisis(prompt)
+
+        return self.render_template(
+            "reportes/reporte3.html",
+            total_productos=total_productos,
+            total_clientes=total_clientes,
+            total_ventas=total_ventas,
+            ingresos=ingresos,
+            labels=labels,
+            valores=valores,
+            producto_top=producto_top,
+            stock_bajo=stock_bajo,
+            recomendacion_stock=recomendacion_stock,
+            analisis_ia=analisis_ia,
+            top_productos=top_productos
+        )
 
 appbuilder.add_view(
     CategoriaView,
@@ -255,8 +436,22 @@ appbuilder.add_view(
 )
 
 appbuilder.add_view(
-    ReporteView,
-    "Reportes",
+    Reporte1View,
+    "Reporte General",
     icon="fa-bar-chart",
-    category="Reportes",
+    category="IA Reportes",
+)
+
+appbuilder.add_view(
+    Reporte2View,
+    "Tendencias",
+    icon="fa-line-chart",
+    category="IA Reportes",
+)
+
+appbuilder.add_view(
+    Reporte3View,
+    "Predicción IA",
+    icon="fa-brain",
+    category="IA Reportes",
 )

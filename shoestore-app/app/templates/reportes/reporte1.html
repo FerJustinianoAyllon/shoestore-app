@@ -1,0 +1,142 @@
+{% extends "appbuilder/base.html" %}
+
+{% block head_css %}
+{{ super() }}
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/reportes.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <h1 class="dashboard-title">
+        <i class="fa fa-shopping-bag icono-dashboard"></i>
+        Reporte General del Sistema
+    </h1>
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="card-metrica text-center">
+                <h4>Productos</h4>
+                <h2>{{ total_productos }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-metrica text-center">
+                <h4>Clientes</h4>
+                <h2>{{ total_clientes }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-metrica text-center">
+                <h4>Ventas</h4>
+                <h2>{{ total_ventas }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-metrica text-center">
+                <h4>Ingresos</h4>
+                <h2>Bs. {{ ingresos }}</h2>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="grafico-container">
+
+        <h3>
+            <i class="fa fa-bar-chart icono-dashboard"></i>
+            Productos Más Vendidos
+        </h3>
+
+        <canvas id="graficoProductos"></canvas>
+
+    </div>
+
+    <div class="tabla-top">
+
+        <h3>
+            <i class="fa fa-table icono-dashboard"></i>
+            Ranking de Productos
+        </h3>
+
+        <table class="table table-hover">
+
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad Vendida</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for producto in productos_vendidos %}
+                <tr>
+                    <td>{{ producto[0] }}</td>
+                    <td>
+                        <span class="badge-stock">
+                            {{ producto[1] }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="card-ia">
+
+        <h3>
+            <i class="fa fa-robot"></i>
+            Análisis Inteligente IA
+        </h3>
+
+        <p style="font-size:16px;">
+            {{ analisis_ia }}
+        </p>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById('graficoProductos');
+
+new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+        labels: {{ labels|tojson }},
+        datasets: [{
+            label: 'Cantidad Vendida',
+            data: {{ valores|tojson }},
+            borderWidth: 2
+        }]
+    },
+
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true
+            }
+        }
+    }
+});
+
+</script>
+
+{% endblock %}

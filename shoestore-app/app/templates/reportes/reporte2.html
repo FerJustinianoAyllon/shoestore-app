@@ -1,0 +1,159 @@
+{% extends "appbuilder/base.html" %}
+
+{% block head_css %}
+{{ super() }}
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/reportes.css') }}">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <h1 class="dashboard-title">
+        <i class="fa fa-line-chart icono-dashboard"></i>
+        Tendencias y Comportamiento
+    </h1>
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="card-metrica text-center">
+                <h4>Promedio</h4>
+                <h2>Bs. {{ promedio_ventas }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-metrica text-center">
+                <h4>Venta Máxima</h4>
+                <h2>Bs. {{ max_venta }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-metrica text-center">
+                <h4>Venta Mínima</h4>
+                <h2>Bs. {{ min_venta }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-metrica text-center">
+                <h4>Tendencia</h4>
+                <h2 style="font-size:20px;">
+                    {{ crecimiento }}
+                </h2>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="grafico-container">
+
+        <h3>
+            <i class="fa fa-area-chart icono-dashboard"></i>
+            Tendencia de Ventas
+        </h3>
+
+        <canvas id="graficoTendencia"></canvas>
+
+    </div>
+
+    <div class="tabla-top">
+
+        <h3>
+            <i class="fa fa-table icono-dashboard"></i>
+            Historial de Ventas
+        </h3>
+
+        <table class="table table-hover">
+
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Total Ventas</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for i in range(labels|length) %}
+                <tr>
+                    <td>{{ labels[i] }}</td>
+                    <td>
+                        <span class="badge-stock">
+                            Bs. {{ valores[i] }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="card-ia">
+
+        <h3>
+            <i class="fa fa-brain"></i>
+            Interpretación Inteligente IA
+        </h3>
+
+        <p style="font-size:16px;">
+            {{ analisis_ia }}
+        </p>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById('graficoTendencia');
+
+new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+
+        labels: {{ labels|tojson }},
+
+        datasets: [{
+
+            label: 'Ventas por Día',
+
+            data: {{ valores|tojson }},
+
+            borderWidth: 3,
+
+            tension: 0.4,
+
+            fill: true
+
+        }]
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+                display: true
+            }
+        }
+    }
+});
+
+</script>
+
+{% endblock %}

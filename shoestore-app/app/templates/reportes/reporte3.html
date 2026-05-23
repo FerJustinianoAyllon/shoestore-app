@@ -1,0 +1,195 @@
+{% extends "appbuilder/base.html" %}
+
+{% block head_css %}
+{{ super() }}
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/reportes.css') }}">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <h1 class="dashboard-title">
+        <i class="fa fa-brain icono-dashboard"></i>
+        Predicción y Recomendación Inteligente
+    </h1>
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="card-metrica text-center">
+                <h4>Producto Estrella</h4>
+                <h2>{{ producto_top }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card-metrica text-center">
+                <h4>Total Ventas</h4>
+                <h2>{{ total_ventas }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card-metrica text-center">
+                <h4>Ingresos</h4>
+                <h2>Bs. {{ ingresos }}</h2>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="grafico-container">
+
+        <h3>
+            <i class="fa fa-pie-chart icono-dashboard"></i>
+            Productos Más Vendidos
+        </h3>
+
+        <canvas id="graficoPrediccion"></canvas>
+
+    </div>
+
+    <div class="tabla-top">
+
+        <h3>
+            <i class="fa fa-fire icono-dashboard"></i>
+            Ranking Inteligente
+        </h3>
+
+        <table class="table table-hover">
+
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Stock</th>
+                    <th>Ventas</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for producto in top_productos %}
+                <tr>
+
+                    <td>{{ producto[0] }}</td>
+
+                    <td>
+
+                        {% if producto[1] < 5 %}
+
+                        <span class="badge badge-danger">
+                            Bajo
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge badge-success">
+                            Estable
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        <span class="badge-stock">
+                            {{ producto[2] }}
+                        </span>
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="card-ia">
+
+        <h3>
+            <i class="fa fa-lightbulb-o"></i>
+            Recomendación Automática
+        </h3>
+
+        <p>
+            {{ recomendacion_stock }}
+        </p>
+
+        {% if stock_bajo %}
+
+        <hr>
+
+        <h4>Productos con Bajo Stock:</h4>
+
+        <ul>
+
+            {% for producto in stock_bajo %}
+            <li>{{ producto }}</li>
+            {% endfor %}
+
+        </ul>
+
+        {% endif %}
+
+    </div>
+
+    <div class="card-ia">
+
+        <h3>
+            <i class="fa fa-robot"></i>
+            Análisis Inteligente IA
+        </h3>
+
+        <p style="font-size:16px;">
+            {{ analisis_ia }}
+        </p>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById('graficoPrediccion');
+
+new Chart(ctx, {
+
+    type: 'doughnut',
+
+    data: {
+
+        labels: {{ labels|tojson }},
+
+        datasets: [{
+
+            data: {{ valores|tojson }},
+
+            borderWidth: 2
+
+        }]
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+</script>
+
+{% endblock %}

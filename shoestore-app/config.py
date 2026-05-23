@@ -17,9 +17,9 @@ SECRET_KEY = "Mi_clave_secreta_123"
 SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@localhost/shoestore_db"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-APP_NAME = "Sistema de Ventas de Zapatillas"
+APP_NAME = "Shoestore"
 
-APP_THEME = "flatly.css"
+APP_THEME = "cyborg.css"
 
 BABEL_DEFAULT_LOCALE = "es"
 # SQLALCHEMY_DATABASE_URI = 'mysql://myapp@localhost/myapp'
