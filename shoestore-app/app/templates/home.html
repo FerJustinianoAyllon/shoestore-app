@@ -1,0 +1,96 @@
+{% extends "appbuilder/base.html" %}
+
+{% block content %}
+
+<div class="hero-dashboard">
+
+    <div class="hero-overlay">
+
+        <h1>
+            👟 ShoeStore IA
+        </h1>
+
+        <p>
+            Plataforma inteligente para la gestión,
+            análisis y predicción de ventas
+            en tiendas de calzado.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="/reporte1view/list/"
+               class="btn btn-warning btn-lg">
+
+               Ver Reportes
+
+            </a>
+
+            <a href="/posview/"
+               class="btn btn-light btn-lg">
+
+               Nueva Venta
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row dashboard-cards">
+
+    <div class="col-md-4">
+
+        <div class="home-card">
+
+            <i class="fa fa-line-chart fa-3x"></i>
+
+            <h3>Reportes Inteligentes</h3>
+
+            <p>
+                Analiza tendencias, productos más vendidos
+                y predicciones automáticas.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="home-card">
+
+            <i class="fa fa-shopping-bag fa-3x"></i>
+
+            <h3>Gestión de Inventario</h3>
+
+            <p>
+                Control total de productos,
+                stock y categorías.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="home-card">
+
+            <i class="fa fa-brain fa-3x"></i>
+
+            <h3>IA Integrada</h3>
+
+            <p>
+                Recomendaciones inteligentes
+                generadas automáticamente.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

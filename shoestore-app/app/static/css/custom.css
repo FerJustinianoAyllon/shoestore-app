@@ -1,0 +1,517 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f4f6f9;
+}
+
+/* NAVBAR */
+
+.navbar {
+
+    background: #000 !important;
+
+    border: none !important;
+
+    border-radius: 0 !important;
+
+    padding: 12px;
+
+    box-shadow: 0 4px 18px rgba(0,0,0,0.2);
+}
+
+.navbar-brand,
+.navbar-nav > li > a {
+
+    color: white !important;
+
+    font-weight: 500;
+}
+
+.navbar-nav > li > a:hover {
+
+    color: #c59d5f !important;
+}
+
+/* HOME */
+
+.hero-dashboard {
+
+    background:
+    linear-gradient(
+        rgba(0,0,0,0.7),
+        rgba(0,0,0,0.7)
+    ),
+    url('/static/uploads/fondo_shoes.jpeg');
+
+    background-size: cover;
+
+    background-position: center;
+
+    border-radius: 24px;
+
+    min-height: 500px;
+
+    padding: 80px;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    margin-top: 20px;
+}
+
+.hero-overlay h1 {
+
+    font-size: 65px;
+
+    font-weight: 700;
+
+    margin-bottom: 20px;
+}
+
+.hero-overlay p {
+
+    font-size: 22px;
+
+    max-width: 700px;
+
+    margin-bottom: 30px;
+}
+
+.hero-buttons {
+
+    margin-top: 30px;
+}
+
+.hero-buttons .btn {
+
+    margin-right: 15px;
+
+    border-radius: 12px;
+
+    padding: 12px 24px;
+
+    font-size: 16px;
+
+    font-weight: 600;
+}
+
+/* CARDS */
+
+.dashboard-cards {
+
+    margin-top: 40px;
+}
+
+.home-card {
+
+    background: white;
+
+    padding: 35px;
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+
+    transition: 0.3s;
+}
+
+.home-card:hover {
+
+    transform: translateY(-10px);
+}
+
+.home-card i {
+
+    color: #c59d5f;
+
+    margin-bottom: 20px;
+}
+
+.home-card h3 {
+
+    font-weight: 600;
+
+    margin-bottom: 15px;
+}
+
+/* TABLAS */
+
+.table {
+
+    background: white;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+}
+
+.table th {
+
+    background: #111 !important;
+
+    color: white;
+}
+
+/* BOTONES */
+
+.btn-primary {
+
+    background: #111 !important;
+
+    border: none !important;
+}
+
+
+/* HOME PRINCIPAL */
+
+.shoestore-home {
+
+    padding: 20px;
+}
+
+/* HERO */
+
+.hero-section {
+
+    background:
+    linear-gradient(
+        rgba(0,0,0,0.75),
+        rgba(0,0,0,0.75)
+    ),
+    url('/static/uploads/fondo_shoes.jpeg');
+
+    background-size: cover;
+
+    background-position: center;
+
+    border-radius: 24px;
+
+    min-height: 500px;
+
+    padding: 80px;
+
+    display: flex;
+
+    align-items: center;
+
+    color: white;
+
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+.hero-content h1 {
+
+    font-size: 65px;
+
+    font-weight: 700;
+
+    margin-bottom: 25px;
+}
+
+.hero-text {
+
+    font-size: 22px;
+
+    max-width: 700px;
+
+    margin-bottom: 35px;
+
+    line-height: 1.8;
+}
+
+.hero-buttons .btn {
+
+    margin-right: 15px;
+
+    border-radius: 12px;
+
+    padding: 14px 28px;
+
+    font-size: 16px;
+
+    font-weight: 600;
+}
+
+/* CARDS */
+
+.cards-home {
+
+    margin-top: 40px;
+}
+
+.home-card {
+
+    background: white;
+
+    border-radius: 22px;
+
+    padding: 35px;
+
+    text-align: center;
+
+    box-shadow: 0 6px 22px rgba(0,0,0,0.08);
+
+    transition: 0.3s;
+}
+
+.home-card:hover {
+
+    transform: translateY(-10px);
+}
+
+.home-card i {
+
+    color: #c59d5f;
+
+    margin-bottom: 20px;
+}
+
+.home-card h3 {
+
+    margin-bottom: 18px;
+
+    font-weight: 600;
+}
+
+.home-card p {
+
+    color: #555;
+
+    line-height: 1.7;
+}
+
+/* LOGIN MODERNO */
+
+.login-container {
+
+    display: flex;
+
+    min-height: 100vh;
+
+    background: #f4f6f9;
+}
+
+/* PANEL IZQUIERDO */
+
+.login-left {
+
+    width: 55%;
+
+    position: relative;
+
+    background:
+    linear-gradient(
+        rgba(0,0,0,0.65),
+        rgba(0,0,0,0.75)
+    ),
+    url('/static/uploads/fondo_shoes.jpeg');
+
+    background-size: cover;
+
+    background-position: center;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
+
+    overflow: hidden;
+}
+
+.brand-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 500px;
+
+    padding: 40px;
+}
+
+.brand-content h1 {
+
+    font-size: 58px;
+
+    font-weight: 700;
+
+    margin-bottom: 25px;
+}
+
+.brand-content p {
+
+    font-size: 22px;
+
+    line-height: 1.8;
+
+    margin-bottom: 40px;
+}
+
+.features {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+.feature-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    font-size: 18px;
+
+    background: rgba(255,255,255,0.08);
+
+    padding: 16px 20px;
+
+    border-radius: 14px;
+
+    backdrop-filter: blur(6px);
+}
+
+.feature-item i {
+
+    color: #c59d5f;
+
+    font-size: 24px;
+}
+
+/* PANEL DERECHO */
+
+.login-right {
+
+    width: 45%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 40px;
+}
+
+.login-card {
+
+    width: 100%;
+
+    max-width: 420px;
+
+    background: white;
+
+    padding: 50px;
+
+    border-radius: 24px;
+
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+}
+
+.login-card h2 {
+
+    font-size: 36px;
+
+    font-weight: 700;
+
+    margin-bottom: 10px;
+
+    color: #111;
+}
+
+.subtitle {
+
+    color: #777;
+
+    margin-bottom: 35px;
+
+    font-size: 16px;
+}
+
+.form-group {
+
+    margin-bottom: 22px;
+}
+
+.form-control {
+
+    height: 50px;
+
+    border-radius: 12px;
+
+    border: 1px solid #ddd;
+
+    box-shadow: none;
+
+    font-size: 15px;
+}
+
+.form-control:focus {
+
+    border-color: #c59d5f;
+
+    box-shadow: 0 0 0 3px rgba(197,157,95,0.15);
+}
+
+.remember {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.btn-login {
+
+    width: 100%;
+
+    border: none;
+
+    background: #111;
+
+    color: white;
+
+    padding: 15px;
+
+    border-radius: 14px;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+
+    background: #c59d5f;
+
+    color: black;
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 992px){
+
+    .login-left{
+
+        display:none;
+    }
+
+    .login-right{
+
+        width:100%;
+    }
+}

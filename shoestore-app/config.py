@@ -19,7 +19,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 APP_NAME = "Shoestore"
 
-APP_THEME = "cyborg.css"
+APP_THEME = "flatly.css"
 
 BABEL_DEFAULT_LOCALE = "es"
 # SQLALCHEMY_DATABASE_URI = 'mysql://myapp@localhost/myapp'
